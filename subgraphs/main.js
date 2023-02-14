@@ -6,7 +6,7 @@ const MAIN_SUBGRAPH_EXCLUDE = ['main.js'];
 
 // grafting config
 const currentNetwork = getCurrentNetwork();
-GRAFT_BASE_OP_MAINNET = 'QmWTY7MvjLsALSXJJpHj7haGeWc8KxZ845YC1DJT7W9uAm';
+GRAFT_BASE_OP_MAINNET = 'QmSBKLdZMeTVrnAWsjagoWbXSd3qLC5NriGEWANQFhu63b';
 GRAFT_BLOCK_OP_MAINNET = 66767120;
 
 const graftBlock = currentNetwork === 'optimism' ? GRAFT_BLOCK_OP_MAINNET : null;

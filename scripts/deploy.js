@@ -160,11 +160,7 @@ program.action(async () => {
 
       if (!settings.buildOnly) {
         await exec(
-          `NETWORK=${
-            settings.network
-          } ./node_modules/.bin/graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ${
-            settings.team
-          }/${networkPrefix(settings.network)}${settings.subgraph} ./subgraphs/${settings.subgraph}.js`,
+          `NETWORK=${settings.network} ./node_modules/.bin/graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ${settings.team}/kwenta-${settings.subgraph} ./subgraphs/${settings.subgraph}.js`,
         );
         console.log(green(`Successfully deployed to ${settings.network} on the hosted service.`));
       }
