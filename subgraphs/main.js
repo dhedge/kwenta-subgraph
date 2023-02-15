@@ -1,28 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const { getCurrentNetwork } = require('./utils/network');
 
 const MAIN_SUBGRAPH_EXCLUDE = ['main.js'];
-
-// grafting config
-const currentNetwork = getCurrentNetwork();
-GRAFT_BASE_OP_MAINNET = 'QmSBKLdZMeTVrnAWsjagoWbXSd3qLC5NriGEWANQFhu63b';
-GRAFT_BLOCK_OP_MAINNET = 66767120;
-
-const graftBlock = currentNetwork === 'optimism' ? GRAFT_BLOCK_OP_MAINNET : null;
-
-const graftBase = currentNetwork === 'optimism' ? GRAFT_BASE_OP_MAINNET : null;
-
-const graftConfig =
-  graftBase && graftBase
-    ? {
-        graft: {
-          base: graftBase,
-          block: graftBlock,
-        },
-        features: ['grafting'],
-      }
-    : {};
 
 // create subgraphs
 const includedSubgraphs = fs.readdirSync(path.join(__dirname, '../subgraphs')).reduce((acc, val) => {
@@ -56,7 +35,6 @@ module.exports = {
   schema: {
     file: './main.graphql',
   },
-  ...graftConfig,
   dataSources: Object.values(dataSources),
   templates: Object.values(templates),
 };
