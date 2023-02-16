@@ -2,19 +2,9 @@ const { getCurrentNetwork, getContractDeployments } = require('./utils/network')
 
 const manifest = [];
 
-// constants
 // addresses
 OP_MAINNET_CROSSMARGIN_ADDRESS = '0x8e43BF1910ad1461EEe0Daca10547c7e6d9D2f36';
 OP_GOERLI_CROSSMARGIN_ADDRESS = '0x9320170B37eDEb4f41cb6E5A8F82B984aD9c44eE';
-
-START_BLOCK_OP_MAINNET = 30657407;
-START_BLOCK_OP_GOERLI = 2172242;
-
-GRAFT_BLOCK_OP_MAINNET = 66271334;
-GRAFT_BLOCK_OP_GOERLI = 4254066;
-
-GRAFT_BASE_OP_MAINNET = 'QmZydEAXDYbNyRzhbDGdg5D47Wv5R99D2jDyf9fYZrqrXH';
-GRAFT_BASE_OP_GOERLI = 'QmbguxdYpf1GKSYdcRjMJuNTtMH7jafbwVa5E3S6mnW8V6';
 
 // calculated variables
 const currentNetwork = getCurrentNetwork();
@@ -24,27 +14,6 @@ const crossMarginAddress =
     : currentNetwork === 'optimism-goerli'
     ? OP_GOERLI_CROSSMARGIN_ADDRESS
     : OP_GOERLI_CROSSMARGIN_ADDRESS;
-
-const crossMarginStartBlock =
-  currentNetwork === 'optimism'
-    ? START_BLOCK_OP_MAINNET
-    : currentNetwork === 'optimism-goerli'
-    ? START_BLOCK_OP_GOERLI
-    : 0;
-
-const graftBlock =
-  currentNetwork === 'optimism'
-    ? GRAFT_BLOCK_OP_MAINNET
-    : currentNetwork === 'optimism-goerli'
-    ? GRAFT_BLOCK_OP_GOERLI
-    : null;
-
-const graftBase =
-  currentNetwork === 'optimism'
-    ? GRAFT_BASE_OP_MAINNET
-    : currentNetwork === 'optimism-goerli'
-    ? GRAFT_BASE_OP_GOERLI
-    : null;
 
 // futures market manager
 getContractDeployments('FuturesMarketManager').forEach((a, i) => {
@@ -143,7 +112,7 @@ manifest.push({
   network: getCurrentNetwork(),
   source: {
     address: crossMarginAddress,
-    startBlock: crossMarginStartBlock,
+    startBlock: 0,
     abi: 'MarginAccountFactory',
   },
   mapping: {
@@ -235,17 +204,6 @@ const perpsMarketTemplate = {
   },
 };
 
-const graftConfig =
-  graftBase && graftBase
-    ? {
-        graft: {
-          base: graftBase,
-          block: graftBlock,
-        },
-        features: ['grafting'],
-      }
-    : {};
-
 module.exports = {
   specVersion: '0.0.4',
   description: 'Kwenta Futures API',
@@ -253,7 +211,6 @@ module.exports = {
   schema: {
     file: './futures.graphql',
   },
-  ...graftConfig,
   dataSources: manifest,
   templates: [marginBaseTemplate, futuresMarketTemplate, perpsMarketTemplate],
 };

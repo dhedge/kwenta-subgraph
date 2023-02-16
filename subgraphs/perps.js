@@ -2,16 +2,6 @@ const { getCurrentNetwork, getContractDeployments } = require('./utils/network')
 
 const manifest = [];
 
-START_BLOCK_OP_GOERLI = 0;
-START_BLOCK_OP_MAINNET = 52456507;
-
-const managerStartBlock =
-  getCurrentNetwork() === 'optimism'
-    ? START_BLOCK_OP_MAINNET
-    : getCurrentNetwork() === 'optimism-goerli'
-    ? START_BLOCK_OP_GOERLI
-    : 0;
-
 // futures market manager
 getContractDeployments('FuturesMarketManager').forEach((a, i) => {
   manifest.push({
@@ -20,7 +10,7 @@ getContractDeployments('FuturesMarketManager').forEach((a, i) => {
     network: getCurrentNetwork(),
     source: {
       address: a.address,
-      startBlock: managerStartBlock,
+      startBlock: 0,
       abi: 'FuturesMarketManager',
     },
     mapping: {
